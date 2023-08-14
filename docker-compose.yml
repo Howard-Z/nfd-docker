@@ -1,0 +1,41 @@
+version: '3'
+services:
+  node1:
+    build: .
+    #image: ubuntu:20.04
+    command: bash -c "while true; do echo -e \"node 2 is running\"; sleep 2; done"
+    #entrypoint: ["/project/scripts/node1.sh"]
+    cap_add:
+      - NET_ADMIN
+    volumes:
+      - ./:/project
+      #- ./files:/run
+    networks:
+      common-net:
+        ipv4_address: 192.168.10.225
+    expose:
+      - 6363
+      - 56363
+      - 9696
+
+
+  node2:
+    build: .
+    #image: ubuntu:20.04
+    command: bash -c "while true; do echo -e \"node 2 is running\"; sleep 2; done"
+    #entrypoint: ["/project/scripts/node2.sh"]
+    cap_add:
+      - NET_ADMIN
+    volumes:
+      - ./:/project
+      #- ./files:/run
+    networks:
+      common-net:
+        ipv4_address: 192.168.10.230
+
+networks:
+  common-net:
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.10.0/24
