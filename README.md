@@ -1,18 +1,24 @@
 # NFD-Dev-Docker
-This is a development docker which contains 2 nodes. Node 1 contains a running instance of NFD, and node 2 is meant for development of an NFD application.
+This is a docker container that installs and runs NFD.
 
 ## First time install
 - In `base` execute `docker build --tag nfd-dev-docker .`
 
 ## Running the containers
-- In the project folder, run `docker-compose up -d` to start the two docker containers node1 and node2.
-  - node1 has IP 192.168.10.225 and node2 has 192.168.10.230
-- Use `docker-compose exec node2 bash` and `docker-compse exec node1 bash` to bash into the Docker
+- In the project folder, run `docker-compose up -d` to start docker container node1.
+  - node1 has IP 192.168.10.225 
+- Use `docker-compse exec node1 bash` to bash into the Docker
+
 ## Setting up the shared socket
-Each node has their own unique script that is required to run simply replace node1 with node2 if setting up the other node
+In order to be able to share the NFD socket between the host and the docker container, the ndn-cxx client must be updated with the new socket path
 ```
-cd /project/scripts
-./node1
+git clone https://github.com/Howard-Z/nfd-dev-docker.git && \
+cd nfd-dev-docker && \
+cd confs && \
+cp client.conf /usr/local/etc/ndn/client.conf && \
+cd .. && \
+cd .. && \
+rm -rf nfd-dev-docker
 ```
 
 ## Cleaning up
